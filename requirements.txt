@@ -1,0 +1,17 @@
+streamlit
+streamlit_authenticator
+sentence-transformers
+
+# on mac use faiss-cpu
+#faiss-gpu ~= 1.7.2
+faiss-cpu ~= 1.7.2
+
+langchain
+langchainhub
+langchain_core
+langchain_community
+cryptography
+beautifulsoup4
+
+#groq
+langchain-groq
