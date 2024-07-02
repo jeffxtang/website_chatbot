@@ -19,11 +19,37 @@ import config
 import json
 import datetime
 from io import StringIO
-
 from langchain_core.tools import tool
 import re
 
-from github_loader import issues_files_load
+from langchain.document_loaders import GithubFileLoader
+from langchain_community.document_loaders import GitHubIssuesLoader
+
+os.environ['GITHUB_PERSONAL_ACCESS_TOKEN'] = os.getenv('GITHUB_PERSONAL_ACCESS_TOKEN')
+
+def issues_files_load():
+    loader = GitHubIssuesLoader(
+        repo=config.GITHUB_REPO_PATH,
+        #include_prs=False,
+        state='all'
+    )
+
+    doc_issues = loader.load()
+    print(f"number of issues: {len(doc_issues)}")
+
+    # load all markdowns files in a repo - API doc: https://api.python.langchain.com/en/latest/document_loaders/langchain_community.document_loaders.github.GithubFileLoader.html
+    loader = GithubFileLoader(
+        repo=config.GITHUB_REPO_PATH,
+        github_api_url="https://api.github.com",
+        file_filter=lambda file_path: file_path.endswith(
+            ".md"
+        ),  
+    )
+    docs_files = loader.load()
+    print(f"number of MD files: {len(docs_files)}")
+
+    all_docs = doc_issues + docs_files
+    return all_docs
 
 source_string = ""
 
@@ -53,10 +79,11 @@ def rag_query(prompt):
     """Search the repo for specific content, such as info about agents, fine-tuning"""
     global source_string 
 
+    print(f">>>chat_history: {st.session_state.chats[st.session_state.current_chatnum-1]}")
     answer = custom_chain.invoke(
         {
             "question": prompt,
-            "chat_history": []
+            "chat_history": st.session_state.chats[st.session_state.current_chatnum-1]
         }
     )
     

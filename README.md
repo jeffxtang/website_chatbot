@@ -1,5 +1,5 @@
-# SiteChat
-Building a chatbot to chat about any web site (documentation) or github repo
+# RepoChat
+This app uses ReAct and Llama 3 to build a chatbot with a web UI to chat about a github repo - its issues, PRs, and content.
 
 ## Setting up the environment
 
@@ -23,19 +23,27 @@ export GROQ_API_KEY=<your_groq_api_key>
 export GITHUB_PERSONAL_ACCESS_TOKEN=<your_github_access_token>
 ```
 
-## Indexing the web site
+## Loading and indexing the repo
 
-First, set `WEB_SITE_URL` and `VECTOR_DB_PATH` in `config.py` such as:
+First, set `GITHUB_REPO_PATH` and `VECTOR_DB_PATH` in `config.py` such as:
 ```
-WEB_SITE_URL = "https://github.com/meta-llama/llama-recipes"
+GITHUB_REPO_PATH = "meta-llama/llama-recipes"
 VECTOR_DB_PATH = 'vectorstore/llama-recipes'
 ```
 
-Then, build the index by running `python index.py`, with the default device type as `cpu`, or if you have a GPU, `python index.py --device cuda`.
+Then, build the index by running `python github_loader.py`, with the default device type as `cpu`, or if you have a GPU, `python github_loader.py --device cuda`.
 
-## Running the Application
+## Running the Chatbot
 
-To start the chatbot:
+To start the ReAct agent-powered RAG chatbot:
 ```
-streamlit run agent_main.py
+streamlit run rag_agent.py
 ```
+
+Questions you may ask include:
+
+How many issues are closed?
+How many issues are opened?
+How many PRs are closed and opened?
+What's fine-tuning?
+Tell me more.
