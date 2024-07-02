@@ -43,8 +43,7 @@ def create_vector_db(device):
 
     print(f"indexing and saving to vector db at {config.VECTOR_DB_PATH}")
 
-    embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2',
-                                        #'hkunlp/instructor-large', 
+    embeddings = HuggingFaceEmbeddings(model_name='hkunlp/instructor-large', 
                                         #'sentence-transformers/all-MiniLM-L6-v2',
                                        model_kwargs={'device': device})
 

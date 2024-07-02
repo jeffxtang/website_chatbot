@@ -18,6 +18,11 @@ export LANGCHAIN_API_KEY=<your_langchain_api_key>
 export GROQ_API_KEY=<your_groq_api_key>
 ```
 
+* Set your `GITHUB_PERSONAL_ACCESS_TOKEN` (get your token [here](https://github.com/settings/tokens)):
+```bash
+export GITHUB_PERSONAL_ACCESS_TOKEN=<your_github_access_token>
+```
+
 ## Indexing the web site
 
 First, set `WEB_SITE_URL` and `VECTOR_DB_PATH` in `config.py` such as:
@@ -26,11 +31,11 @@ WEB_SITE_URL = "https://github.com/meta-llama/llama-recipes"
 VECTOR_DB_PATH = 'vectorstore/llama-recipes'
 ```
 
-Then, build the index by running `python index.py`, with the default device type as `cpu`, or if you have a GPU, `python index.py --device cpu`.
+Then, build the index by running `python index.py`, with the default device type as `cpu`, or if you have a GPU, `python index.py --device cuda`.
 
 ## Running the Application
 
 To start the chatbot:
 ```
-streamlit run main.py
+streamlit run agent_main.py
 ```
