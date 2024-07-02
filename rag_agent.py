@@ -139,7 +139,7 @@ known_actions = {
 }
 action_re = re.compile('^Action: (\w+): (.*)$')   # python regular expression to selection action
 
-# TODO: 1. show doc sources for RAG tool; 2. add chat history
+# TODO: add chat history
 def react(llm, question, max_turns=5):
     i = 0
     bot = Agent(llm, system_prompt)

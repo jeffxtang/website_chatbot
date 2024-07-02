@@ -190,6 +190,9 @@ prompt = st.chat_input("Ask RepoChat")
 
 if prompt:
     st.chat_message("user").markdown(prompt)
+
+    print(f">>>chat_history: {st.session_state.chats[st.session_state.current_chatnum-1]}")
+
     answer = custom_chain.invoke(
         {
             "question": prompt,
