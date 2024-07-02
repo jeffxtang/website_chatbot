@@ -25,10 +25,14 @@ import re
 
 from github_loader import issues_files_load
 
+source_string = ""
+
 @tool
 def repo_statistics(stat):
     """Returns the statistics of a repo, including number of total issues, closed issues, open issues, total PRs, closed PRs, open PRs."""
     
+    global source_string 
+    source_string = ""
     if "number_of_total_issues" == stat:
         return st.session_state.github_stat['issues']
     elif "number_of_closed_issues" == stat:
@@ -47,7 +51,8 @@ def repo_statistics(stat):
 @tool
 def rag_query(prompt):
     """Search the repo for specific content, such as info about agents, fine-tuning"""
-    
+    global source_string 
+
     answer = custom_chain.invoke(
         {
             "question": prompt,
@@ -56,6 +61,23 @@ def rag_query(prompt):
     )
     
     response = answer['response']
+    docs = answer['source_document']
+
+    sources = []
+    for doc in docs:
+        if 'source' in doc.metadata:
+            if doc.metadata['source'] in sources:
+                continue
+            sources.append(doc.metadata['source'])
+
+    source_string = ""
+    if len(sources) == 1:
+        source_string = "Source:\n"
+    elif len(sources) > 1:
+        source_string += "Sources:\n"    
+    for source in sources:
+        source_string += "\n> - " + source.replace("api.github.com", "github.com") + "\n"
+
     return(response)
 
 system_prompt = """
@@ -91,14 +113,14 @@ known_actions = {
 action_re = re.compile('^Action: (\w+): (.*)$')   # python regular expression to selection action
 
 # TODO: 1. show doc sources for RAG tool; 2. add chat history
-def query(llm, question, max_turns=5):
+def react(llm, question, max_turns=5):
     i = 0
     bot = Agent(llm, system_prompt)
     next_prompt = question
     while i < max_turns:
         i += 1
         result = bot(next_prompt)
-        print(result)
+        print(f"***{result=}***")
         actions = [
             action_re.match(a)
             for a in result.split('\n')
@@ -343,7 +365,7 @@ prompt = st.chat_input("Ask RepoChat")
 
 if prompt:
     st.chat_message("user").markdown(prompt)
-    answer = query(llm, prompt)
+    answer = react(llm, prompt)
     # answer = custom_chain.invoke(
     #     {
     #         "question": prompt,
@@ -352,6 +374,8 @@ if prompt:
     # )
 
     response = answer
+    if source_string != "":
+        response += "\n> " + source_string
 
     # response = answer['response']
     # docs = answer['source_document']
