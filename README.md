@@ -67,4 +67,4 @@ Questions you may ask include:
 What's fine-tuning?
 Tell me more.
 
-![](main.png.png)
+![](main.png)
