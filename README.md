@@ -1,5 +1,5 @@
 # RepoChat
-This app uses ReAct and Llama 3 to build a chatbot with a web UI to chat about a github repo - its issues, PRs, and content.
+This repo shows how to use ReAct agent, RAG, Llama 3 and LangChain to build chatbots with a streamlit web UI to chat about a github repo - its issues, PRs, and content.
 
 ## Setting up the environment
 
@@ -33,7 +33,7 @@ VECTOR_DB_PATH = 'vectorstore/llama-recipes'
 
 Then, build the index by running `python github_loader.py`, with the default device type as `cpu` - this may take 10+ minutes to run; if you have a GPU, `python github_loader.py --device cuda`.
 
-## Running the ReAct Agent-powered RAG Chatbot
+## Running the ReAct-powered RAG Chatbot
 
 Run:
 ```
@@ -44,10 +44,10 @@ Then open `http://localhost:8501` on your browser.
 
 Questions you may ask include:
 
-How many issues are closed?
-How many issues are opened?
-How many PRs are closed and opened?
-What's fine-tuning?
+* How many issues are closed?
+* How many issues are opened?
+* How many PRs are closed and opened?
+* What's fine-tuning?
 
 ![](react_rag1.png)
 ![](react_rag2.png)
@@ -64,7 +64,7 @@ Then open `http://localhost:8501` on your browser.
 
 Questions you may ask include:
 
-What's fine-tuning?
-Tell me more.
+* What's fine-tuning?
+* Tell me more.
 
 ![](main.png)
