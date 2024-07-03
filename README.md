@@ -31,14 +31,16 @@ GITHUB_REPO_PATH = "meta-llama/llama-recipes"
 VECTOR_DB_PATH = 'vectorstore/llama-recipes'
 ```
 
-Then, build the index by running `python github_loader.py`, with the default device type as `cpu`, or if you have a GPU, `python github_loader.py --device cuda`.
+Then, build the index by running `python github_loader.py`, with the default device type as `cpu` - this may take 10+ minutes to run; if you have a GPU, `python github_loader.py --device cuda`.
 
-## Running the Chatbot
+## Running the ReAct Agent-powered RAG Chatbot
 
-To start the ReAct agent-powered RAG chatbot:
+Run:
 ```
 streamlit run rag_agent.py
 ```
+
+Then open `http://localhost:8501` on your browser.
 
 Questions you may ask include:
 
@@ -46,4 +48,23 @@ How many issues are closed?
 How many issues are opened?
 How many PRs are closed and opened?
 What's fine-tuning?
+
+![](react_rag1.png)
+![](react_rag2.png)
+
+You can start a new chat as shown above.
+
+## Running the Multi-turn RAG Chatbot
+
+Run:
+```
+streamlit run main.py
+```
+Then open `http://localhost:8501` on your browser.
+
+Questions you may ask include:
+
+What's fine-tuning?
 Tell me more.
+
+![](main.png.png)

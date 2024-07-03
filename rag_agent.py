@@ -83,7 +83,7 @@ def rag_query(prompt):
     answer = custom_chain.invoke(
         {
             "question": prompt,
-            "chat_history": st.session_state.chats[st.session_state.current_chatnum-1]
+            "chat_history": [] #st.session_state.chats[st.session_state.current_chatnum-1]
         }
     )
     
@@ -139,7 +139,8 @@ known_actions = {
 }
 action_re = re.compile('^Action: (\w+): (.*)$')   # python regular expression to selection action
 
-# TODO: add chat history
+# TODO: add chat history - how to let react know which action
+# to take based on new question plus chat history?
 def react(llm, question, max_turns=5):
     i = 0
     bot = Agent(llm, system_prompt)
@@ -393,6 +394,13 @@ prompt = st.chat_input("Ask RepoChat")
 if prompt:
     st.chat_message("user").markdown(prompt)
     answer = react(llm, prompt)
+    # answer = react(llm, f"""
+    # Chat history:
+    # {get_buffer_string(st.session_state.chats[st.session_state.current_chatnum-1][-6:])}
+    # User question:
+    # {prompt}
+    # """)
+
     # answer = custom_chain.invoke(
     #     {
     #         "question": prompt,
@@ -403,26 +411,6 @@ if prompt:
     response = answer
     if source_string != "":
         response += "\n> " + source_string
-
-    # response = answer['response']
-    # docs = answer['source_document']
-
-    # sources = []
-    # if len(docs) > 0:
-    #     # response += "\n> Source"
-    #     # if len(docs) == 1:
-    #     #     response += ":\n"
-    #     # else:
-    #     #     response += "s:\n"
-
-    #     for doc in docs:
-    #         if 'source' in doc.metadata:
-    #             if doc.metadata['source'] in sources:
-    #                 continue
-    #             sources.append(doc.metadata['source'])
-    #             response += "\n> - " + doc.metadata['source'].replace("api.github.com", "github.com") + "\n"
-    # else:
-    #    response = "Sorry, I can't find any relevant documents. Please rephrase your question."
 
     st.chat_message("assistant").markdown(response)
 
